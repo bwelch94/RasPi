@@ -18,8 +18,8 @@ def default_pins():
 	ack = 2 
 	#output pins: x/y words, REQ signal in DSTDC-F
 	req = [3]
-	xpins = np.arange(4,15).tolist()
-	ypins = np.arange(16,27).tolist()
+	xpins = [22,18,9,23,15,25,27,14,10,17,4,24] # MSB to LSB order
+	ypins = [21,5,26,20,7,19,16,8,13,12,11,6] # MSB to LSB order
 
 	return ack, req, xpins, ypins
 
