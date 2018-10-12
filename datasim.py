@@ -1,5 +1,5 @@
 import numpy as np
-import RPi.GPIO GPIO
+import RPi.GPIO as GPIO
 
 def setup(inpin,outpin,mode=GPIO.BCM):
 	'''Setup for RasPi GPIO pins. 
@@ -17,7 +17,7 @@ def default_pins():
 	#input pins: ACK in DSTDC-F manual
 	ack = 2 
 	#output pins: x/y words, REQ signal in DSTDC-F
-	req = 3
+	req = [3]
 	xpins = np.arange(4,15).tolist()
 	ypins = np.arange(16,27).tolist()
 
@@ -27,8 +27,9 @@ def make_xy():
 	#random 0 or 1 choice for now
 	#maybe try to follow some pattern later?
 	choices = [0,1]
-	xstates = np.random.choice(choices,size=12)
-	ystates = np.random.choice(choices,size=12)
+	xstates = np.random.choice(choices,size=11).tolist()
+	ystates = np.random.choice(choices,size=11).tolist()
+	return xstates,ystates
 
 def main():
 	# Flesh out later...
@@ -39,10 +40,11 @@ def main():
 	# main loop. Maybe change this to only run when a switch is thrown?
 	while True:
 		xstates, ystates = make_xy()
+		print(xpins,xstates)
 		GPIO.output(xpins, xstates)
 		GPIO.output(ypins, ystates)
 		GPIO.output(req, 0)
 		#wait for rising edge at end of ACK pulse
-		GPIO.wait_for_edge(ack, GPIO.RISING) 
+		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=10000) 
 		GPIO.output(req, 1)
 		continue
