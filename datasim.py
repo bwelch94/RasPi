@@ -9,7 +9,7 @@ def setup(inpin,outpin,mode=GPIO.BCM):
 	Pull up because handshake reads negative signals
 	'''
 	GPIO.setmode(mode)
-	GPIO.setup(inpin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+	GPIO.setup(inpin, GPIO.IN)#, pull_up_down = GPIO.PUD_UP)
 	GPIO.setup(outpin, GPIO.OUT)
 
 def default_pins():
@@ -27,8 +27,8 @@ def make_xy():
 	#random 0 or 1 choice for now
 	#maybe try to follow some pattern later?
 	choices = [0,1]
-	xstates = np.random.choice(choices,size=11).tolist()
-	ystates = np.random.choice(choices,size=11).tolist()
+	xstates = np.random.choice(choices,size=12).tolist()
+	ystates = np.random.choice(choices,size=12).tolist()
 	return xstates,ystates
 
 def main():
