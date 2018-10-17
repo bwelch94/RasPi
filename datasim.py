@@ -27,8 +27,12 @@ def make_xy():
 	#random 0 or 1 choice for now
 	#maybe try to follow some pattern later?
 	choices = [0,1]
-	xstates = np.random.choice(choices,size=12).tolist()
-	ystates = np.random.choice(choices,size=12).tolist()
+	#xstates = np.random.choice(choices,size=12).tolist()
+	xval = np.random.randint(low=1,high=500)
+	xbin = '{0:016b}'.format(xval)
+	xstates = list(map(int, xbin))
+	# for now, use y=x to create easy pattern
+	ystates = xstates 
 	return xstates,ystates
 
 def main():
@@ -45,6 +49,6 @@ def main():
 		GPIO.output(ypins, ystates)
 		GPIO.output(req, 0)
 		#wait for rising edge at end of ACK pulse
-		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=10000) 
+		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=250) 
 		GPIO.output(req, 1)
 		continue
