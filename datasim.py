@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import RPi.GPIO as GPIO
 
 def setup(inpin,outpin,mode=GPIO.BCM):
@@ -28,18 +29,19 @@ def make_xy():
 	#maybe try to follow some pattern later?
 	choices = [0,1]
 	#xstates = np.random.choice(choices,size=12).tolist()
-	xval = np.random.randint(low=1,high=500)
-	xbin = '{0:016b}'.format(xval)
+	xval = np.random.randint(low=1,high=4095)
+	xbin = '{0:012b}'.format(xval)
 	xstates = list(map(int, xbin))
 	# for now, use y=x to create easy pattern
 	ystates = xstates 
 	return xstates,ystates
 
-def main():
+def main(rate=10.):
 	# Flesh out later...
 	ack, req, xpins, ypins = default_pins()
 	outpins = req + xpins + ypins
 	setup(ack, outpins)
+	print(req)
 	GPIO.output(req, 1)
 	# main loop. Maybe change this to only run when a switch is thrown?
 	while True:
@@ -49,6 +51,13 @@ def main():
 		GPIO.output(ypins, ystates)
 		GPIO.output(req, 0)
 		#wait for rising edge at end of ACK pulse
+		#add pause (sim 100musec) to avoid overdoing it for the computer
+		#time.sleep(1./(2*rate))
 		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=250) 
 		GPIO.output(req, 1)
+		time.sleep(1./(2*rate))
 		continue
+	return	
+
+
+
