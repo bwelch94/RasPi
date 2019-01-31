@@ -21,11 +21,14 @@ int main(void){
 	int myCount = 0;
 	srand(time(0)); //seed random number generator with current time
 	setup();
-	xpins = xpins; //make this a real thing later
-	ypins = ypins;
-	wiringPiISR(ackPin, INT_EDGE_FALLING, &interrupt)
+	int npins = 12;
+	int xpins[12] = {22,18,9,23,15,25,27,14,10,17,4,24}; //MSB to LSB order
+	int ypins[12] = {21,5,26,20,7,19,16,8,13,12,11,6};
+	int ackPin = 2; //assuming BCM numbering
+	int reqPin = 3; //assuming BCM numbering
+	wiringPiISR(ackPin, INT_EDGE_FALLING, &interrupt);
 	for (;;) {
-		for (i; i < npins; i++){
+		for (int i; i < npins; i++){
 			int xstate, ystate;
 			xstate = ystate = rand() % 2; //change this eventually to do patterns etc.
 			digitalWrite(xpins[i], xstate);
@@ -36,7 +39,7 @@ int main(void){
 			if (globalCounter != myCount){
 				printf("Event! N. %d", globalCounter);
 				myCount = globalCounter;
-				delay(100) // delay in milliseconds
+				delay(100); // delay in milliseconds
 				break;
 			}
 		}
@@ -47,10 +50,13 @@ int main(void){
 void interrupt(void) {++globalCounter;}
 
 int setup(void){
+	wiringPiSetupGpio(); // set up wiringPi to use BCM pin numbering
 	int npins = 12; //double check this number, should be n_each of x,y pins
 	int ackPin = 2; //assuming BCM numbering
 	int reqPin = 3; //assuming BCM numbering
-	for (i; i < npins; i++){
+	int xpins[12] = {22,18,9,23,15,25,27,14,10,17,4,24}; //MSB to LSB order
+	int ypins[12] = {21,5,26,20,7,19,16,8,13,12,11,6};
+	for (int i; i < npins; i++){
 		pinMode(xpins[i], OUTPUT);
 		pinMode(ypins[i], OUTPUT);
 	}
