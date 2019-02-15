@@ -3,13 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-/* currently psuedo-code, so probs won't work for a while... 
-Also I'm writing this on my laptop w/o testing on the Pi.
-Which means it almost certainly won't work for a while
-*/
+
 
 // global counter - counts total number of recorded events
-static volatile int globalCounter ;
+static volatile int globalCounter;
 
 int setup(void);
 
@@ -18,6 +15,9 @@ int setup(void);
 void interrupt(void);
 
 int main(void){
+	double countRate = 400;
+	double delayTime;
+	delayTime = (1/countRate) * 1000;
 	int myCount = 0;
 	srand(time(0)); //seed random number generator with current time
 	setup();
@@ -26,24 +26,37 @@ int main(void){
 	int ypins[12] = {21,5,26,20,7,19,16,8,13,12,11,6};
 	int ackPin = 2; //assuming BCM numbering
 	int reqPin = 3; //assuming BCM numbering
+	time_t now, later, endtime;
+	time_t seconds = 1;
 	wiringPiISR(ackPin, INT_EDGE_FALLING, &interrupt);
 	for (;;) {
-		for (int i; i < npins; i++){
+		for (int i=0; i < npins; i++){
 			int xstate, ystate;
 			xstate = ystate = rand() % 2; //change this eventually to do patterns etc.
 			digitalWrite(xpins[i], xstate);
 			digitalWrite(ypins[i], ystate);
+			//printf("Pin %d State is %d \n", i,xstate);
 		}
+		digitalWrite(reqPin, LOW); // data available
 		// wait for signal from ACK line
+		now = time(NULL);
+		endtime = now + seconds;
 		for (;;){
 			if (globalCounter != myCount){
-				printf("Event! N. %d", globalCounter);
+				printf("Event! N. %d \n", globalCounter);
 				myCount = globalCounter;
-				delay(100); // delay in milliseconds
+				delay(delayTime); // delay in milliseconds
+				break;
+			}
+			later = time(NULL);
+			if (later > endtime){
+				printf("Nada... \n");
 				break;
 			}
 		}
+		digitalWrite(reqPin, HIGH);
 	}
+	return(1);
 }
 
 
@@ -61,8 +74,7 @@ int setup(void){
 		pinMode(ypins[i], OUTPUT);
 	}
 	pinMode(ackPin, INPUT);
-	pinMode(reqPin, INPUT);
+	pinMode(reqPin, OUTPUT);
 	pullUpDnControl(ackPin, PUD_UP);
-	pullUpDnControl(reqPin, PUD_UP);
 	return 0;
 }

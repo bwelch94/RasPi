@@ -53,7 +53,7 @@ def main(rate=10.):
 		#wait for rising edge at end of ACK pulse
 		#add pause (sim 100musec) to avoid overdoing it for the computer
 		#time.sleep(1./(2*rate))
-		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=250) 
+		GPIO.wait_for_edge(ack, GPIO.RISING, timeout=3000) 
 		GPIO.output(req, 1)
 		time.sleep(1./(2*rate))
 		continue
