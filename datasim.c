@@ -20,19 +20,30 @@ int main(void){
 	delayTime = (1/countRate) * 1000;
 	int myCount = 0;
 	srand(time(0)); //seed random number generator with current time
-	setup();
+	wiringPiSetupGpio(); // set up wiringPi to use BCM pin numbering 
 	int npins = 12;
 	int xpins[12] = {22,18,9,23,15,25,27,14,10,17,4,24}; //MSB to LSB order
 	int ypins[12] = {21,5,26,20,7,19,16,8,13,12,11,6};
 	int ackPin = 2; //assuming BCM numbering
 	int reqPin = 3; //assuming BCM numbering
+	for (int i; i < npins; i++){
+		pinMode(xpins[i], OUTPUT);
+		pinMode(ypins[i], OUTPUT);
+	}
+	pinMode(ackPin, INPUT);
+	pinMode(reqPin, OUTPUT);
+	pullUpDnControl(ackPin, PUD_UP);
 	time_t now, later, endtime;
 	time_t seconds = 1;
 	wiringPiISR(ackPin, INT_EDGE_FALLING, &interrupt);
 	for (;;) {
+		int xnum, xstate, ynum, ystate;
+		char xhex[16], xbin[16], yhex[16], ybin[16];
+		xnum = rand() % 500; // make this a random int in some range...
+		sprintf(xhex, "%x", xnum);
+		xbin = hex2bin(xhex);
+		ybin = xbin //include y later, right now just make sure this works
 		for (int i=0; i < npins; i++){
-			int xstate, ystate;
-			xstate = ystate = rand() % 2; //change this eventually to do patterns etc.
 			digitalWrite(xpins[i], xstate);
 			digitalWrite(ypins[i], ystate);
 			//printf("Pin %d State is %d \n", i,xstate);
