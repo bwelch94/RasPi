@@ -116,11 +116,20 @@ int main(void){
 		//ystate = atoi(ybin);
 		for (int i=0; i < npins; i++){
 			printf("start for loop\n");
-			int xi = atoi(xbin[i]);
-			int yi = atoi(xbin[i]);
-			printf("done atoi\n");
-			digitalWrite(xpins[i], xi);
-			digitalWrite(ypins[i], yi);
+			if (xbin[i] == "1"){
+				digitalWrite(xpins[i], HIGH)
+			} else if (xbin[i] == "0"){
+				digitalWrite(xpins[i], LOW)
+			}
+			if (ybin[i] == "1"){
+				digitalWrite(ypins[i], HIGH)
+			} else if (ybin[i] == "0"){
+				digitalWrite(ypins[i], LOW)
+			}
+			//int xi = atoi(xbin[i]);
+			//int yi = atoi(xbin[i]);
+			//digitalWrite(xpins[i], xi);
+			//digitalWrite(ypins[i], yi);
 			printf("Pin %d State is %d \n", i,xi);
 		}
 		digitalWrite(reqPin, LOW); // data available
