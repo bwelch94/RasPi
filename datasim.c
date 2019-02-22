@@ -10,6 +10,8 @@ static volatile int globalCounter;
 
 int setup(void);
 
+char hex2bin(char input[]);
+
 //int make_xy(void); this may come back eventually, but for now its out. 
 
 void interrupt(void);
@@ -88,4 +90,22 @@ int setup(void){
 	pinMode(reqPin, OUTPUT);
 	pullUpDnControl(ackPin, PUD_UP);
 	return 0;
+}
+
+char hex2bin(char input[]){
+//	const char input[] = "..."; // the value to be converted
+	char res[13]; // the length of the output string has to be n+1 where n is the number of binary digits to show, in this case 12
+	res[12] = '\0';
+	int t = 2048; // set this to s^(n-1) where n is the number of binary digits to show, in this case 8
+	int v = strtol(input, 0, 16); // convert the hex value to a number
+
+	while(t) // loop till we're done
+	{
+    	strcat(res, t < v ? "1" : "0");
+    	if(t < v)
+        	v -= t;
+    	t /= 2;
+	}
+	// res now contains the binary representation of the number
+	return res;
 }
