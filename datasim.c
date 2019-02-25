@@ -18,7 +18,7 @@ char hex2bin(char input[]);
 void interrupt(void);
 
 int main(void){
-	double countRate = 400;
+	double countRate = 4;
 	double delayTime;
 	delayTime = (1/countRate) * 1000;
 	int myCount = 0;
@@ -42,8 +42,8 @@ int main(void){
 	for (;;) {
 		int xnum, ynum;
 		char xhex[16] = "", xbin[16] = "", yhex[16] = "", ybin[16] = "";
-		xnum = rand() % 500; // make this a random int in some range...
-		ynum = xnum;
+		xnum = rand() % 50; // make this a random int in some range...
+		ynum = rand() % 50;
 		sprintf(xhex, "%03x", xnum);
 		sprintf(yhex, "%03x", ynum);
 		printf("xnum %i \n", xnum);
@@ -115,22 +115,21 @@ int main(void){
 		//xstate = atoi(xbin);
 		//ystate = atoi(ybin);
 		for (int i=0; i < npins; i++){
-			printf("start for loop\n");
-			if (xbin[i] == "1"){
+			if (xbin[i] == 49){ // 49 = 1 in ASCII conversion
 				digitalWrite(xpins[i], HIGH);
-			} else if (xbin[i] == "0"){
+			} else if (xbin[i] == 48){ // 48 = 0 in ASCII conversion
 				digitalWrite(xpins[i], LOW);
 			}
-			if (ybin[i] == "1"){
+			if (ybin[i] == 49){
 				digitalWrite(ypins[i], HIGH);
-			} else if (ybin[i] == "0"){
+			} else if (ybin[i] == 48){
 				digitalWrite(ypins[i], LOW);
 			}
 			//int xi = atoi(xbin[i]);
 			//int yi = atoi(xbin[i]);
 			//digitalWrite(xpins[i], xi);
 			//digitalWrite(ypins[i], yi);
-			printf("Pin %d State is %d \n", i,xbin[i]);
+			//printf("Pin %d State is %d \n", i,xbin[i]);
 		}
 		digitalWrite(reqPin, LOW); // data available
 		// wait for signal from ACK line
