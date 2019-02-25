@@ -44,8 +44,8 @@ int main(void){
 		char xhex[16] = "", xbin[16] = "", yhex[16] = "", ybin[16] = "";
 		xnum = rand() % 500; // make this a random int in some range...
 		ynum = xnum;
-		sprintf(xhex, "%x", xnum);
-		sprintf(yhex, "%x", ynum);
+		sprintf(xhex, "%03x", xnum);
+		sprintf(yhex, "%03x", ynum);
 		printf("xnum %i \n", xnum);
 		printf("xhex %s \n", xhex);
 		//printf("hex2bin %s \n", hex2bin(xhex));
