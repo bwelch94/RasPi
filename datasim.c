@@ -41,7 +41,7 @@ int main(void){
 	wiringPiISR(ackPin, INT_EDGE_FALLING, &interrupt);
 	for (;;) {
 		int xnum, ynum;
-		char xhex[16], xbin[16], yhex[16], ybin[16];
+		char xhex[16] = "", xbin[16] = "", yhex[16] = "", ybin[16] = "";
 		xnum = rand() % 500; // make this a random int in some range...
 		ynum = xnum;
 		sprintf(xhex, "%x", xnum);
@@ -77,10 +77,10 @@ int main(void){
              			case 'f': strcat(xbin, "1111"); break;
              			default:  sprintf(xbin, "\nInvalid hexadecimal digit %c ",xhex[ix]); return 0;
          		}
-         		i++;
+         		ix++;
     		}
 		printf("x %s \n", xbin);
-		/*long int j=0;
+		long int j=0;
 		printf("yhex %s \n",yhex);
     		while(yhex[j]){
     			printf("%li \n",j);
@@ -110,27 +110,27 @@ int main(void){
              			default:  sprintf(ybin, "\nInvalid hexadecimal digit %c ",yhex[j]); return 0;
          		}
          		j++;
-    		}*/
-		printf("y \n");
+    		}
+		printf("y %s \n", ybin);
 		//xstate = atoi(xbin);
 		//ystate = atoi(ybin);
 		for (int i=0; i < npins; i++){
 			printf("start for loop\n");
 			if (xbin[i] == "1"){
-				digitalWrite(xpins[i], HIGH)
+				digitalWrite(xpins[i], HIGH);
 			} else if (xbin[i] == "0"){
-				digitalWrite(xpins[i], LOW)
+				digitalWrite(xpins[i], LOW);
 			}
 			if (ybin[i] == "1"){
-				digitalWrite(ypins[i], HIGH)
+				digitalWrite(ypins[i], HIGH);
 			} else if (ybin[i] == "0"){
-				digitalWrite(ypins[i], LOW)
+				digitalWrite(ypins[i], LOW);
 			}
 			//int xi = atoi(xbin[i]);
 			//int yi = atoi(xbin[i]);
 			//digitalWrite(xpins[i], xi);
 			//digitalWrite(ypins[i], yi);
-			printf("Pin %d State is %d \n", i,xi);
+			printf("Pin %d State is %d \n", i,xbin[i]);
 		}
 		digitalWrite(reqPin, LOW); // data available
 		// wait for signal from ACK line
