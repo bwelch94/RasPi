@@ -18,7 +18,7 @@ char hex2bin(char input[]);
 void interrupt(void);
 
 int main(void){
-	double countRate = 4;
+	double countRate = 50000;
 	double delayTime;
 	delayTime = (1/countRate) * 1000;
 	int myCount = 0;
@@ -42,16 +42,17 @@ int main(void){
 	for (;;) {
 		int xnum, ynum;
 		char xhex[16] = "", xbin[16] = "", yhex[16] = "", ybin[16] = "";
-		xnum = rand() % 50; // make this a random int in some range...
-		ynum = rand() % 50;
+		xnum = rand() % 50;
+		xnum = xnum + 150;
+		ynum = rand() % 800;
 		sprintf(xhex, "%03x", xnum);
 		sprintf(yhex, "%03x", ynum);
-		printf("xnum %i \n", xnum);
-		printf("xhex %s \n", xhex);
+		//printf("xnum %i \n", xnum);
+		//printf("xhex %s \n", xhex);
 		//printf("hex2bin %s \n", hex2bin(xhex));
 		long int ix=0;
     		while(xhex[ix]){
-    			printf("%li \n",ix);
+    			//printf("%li \n",ix);
          		switch(xhex[ix]){
              			case '0': strcat(xbin, "0000"); break;
              			case '1': strcat(xbin, "0001"); break;
@@ -79,11 +80,11 @@ int main(void){
          		}
          		ix++;
     		}
-		printf("x %s \n", xbin);
+		//printf("x %s \n", xbin);
 		long int j=0;
-		printf("yhex %s \n",yhex);
+		//printf("yhex %s \n",yhex);
     		while(yhex[j]){
-    			printf("%li \n",j);
+    			//printf("%li \n",j);
          		switch(yhex[j]){
              			case '0': strcat(ybin, "0000"); break;
              			case '1': strcat(ybin, "0001"); break;
@@ -111,7 +112,7 @@ int main(void){
          		}
          		j++;
     		}
-		printf("y %s \n", ybin);
+		//printf("y %s \n", ybin);
 		//xstate = atoi(xbin);
 		//ystate = atoi(ybin);
 		for (int i=0; i < npins; i++){
