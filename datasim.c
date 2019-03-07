@@ -18,7 +18,7 @@ char hex2bin(char input[]);
 void interrupt(void);
 
 int main(void){
-	double countRate = 50000;
+	double countRate = 1000;
 	double delayTime;
 	delayTime = (1/countRate) * 1000;
 	int myCount = 0;
@@ -42,9 +42,22 @@ int main(void){
 	for (;;) {
 		int xnum, ynum;
 		char xhex[16] = "", xbin[16] = "", yhex[16] = "", ybin[16] = "";
-		xnum = rand() % 50;
-		xnum = xnum + 150;
-		ynum = rand() % 800;
+		xnum = rand() % 3000;//150;
+		xnum = xnum + 500;
+		/*if (xnum < 50){
+			xnum = xnum + 150;
+		} else if (xnum >= 50 && xnum < 100){
+			xnum = xnum + 1850;
+		} else if (xnum >= 100){
+			xnum = xnum +3450;
+		} // add multiple x positions for vertical bars
+		ynum = rand() % 2400;
+		if (ynum >= 800 && ynum < 1600){
+			ynum = ynum + 800;
+		} else if (ynum >= 1600){
+			ynum = ynum + 1600;
+		}*/
+		ynum = xnum;
 		sprintf(xhex, "%03x", xnum);
 		sprintf(yhex, "%03x", ynum);
 		//printf("xnum %i \n", xnum);
